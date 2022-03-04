@@ -56,7 +56,7 @@ const makeSut = (): SutType => {
 	};
 };
 
-describe("SignUp Controller request fields", () => {
+describe("SignUp Controller", () => {
 	test("Should return 400 if no name is provided", async () => {
 		const { sut } = makeSut();
 		const httpRequest = {
