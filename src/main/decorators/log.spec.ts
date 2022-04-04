@@ -91,4 +91,30 @@ describe("LogController Decorator", () => {
 			},
 		});
 	});
+
+	test("Should call LogErrorRepository with correct error if controller returns a server error", async () => {
+		const { sut, controllerStub, logErrorRepositoryStub } = makeSut();
+		const fakeError = new Error();
+		fakeError.stack = "any_stack";
+		const error = serverError(fakeError);
+
+		const logSpy = jest.spyOn(logErrorRepositoryStub, "logError");
+
+		jest.spyOn(controllerStub, "handle").mockReturnValueOnce(
+			new Promise((resolve, reject) => {
+				resolve(error);
+			})
+		);
+
+		const httpRequest = {
+			body: {
+				email: "any_mail@mail.com",
+				name: "any_name",
+				password: "any_password",
+				password_confirmation: "any_password",
+			},
+		};
+		await sut.handle(httpRequest);
+		expect(logSpy).toHaveBeenCalledWith("any_stack");
+	});
 });
