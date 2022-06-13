@@ -5,8 +5,16 @@ import { Controller } from "../../protocols/controller";
 
 export class LoginController implements Controller {
 	async handle(httpRquest: HttpRequest): Promise<HttpResponse> {
-		return new Promise<HttpResponse>((resolve, reject) =>
-			resolve(badRequest(new MissingParamError("email")))
-		);
+		if (!httpRquest.body.email) {
+			return new Promise<HttpResponse>((resolve, reject) =>
+				resolve(badRequest(new MissingParamError("email")))
+			);
+		}
+
+		if (!httpRquest.body.password) {
+			return new Promise<HttpResponse>((resolve, reject) =>
+				resolve(badRequest(new MissingParamError("password")))
+			);
+		}
 	}
 }
