@@ -7,6 +7,7 @@ import {
 } from "../../helpers/http-helper";
 import { HttpRequest, Authentication, EmailValidator } from "./login-protocols";
 import { LoginController } from "./login";
+import { Validation } from "../../helpers/validators/validation";
 
 const makeEmailValidator = (): EmailValidator => {
 	class EmailValidatorStub implements EmailValidator {
@@ -28,6 +29,16 @@ const makeAuthentication = (): Authentication => {
 	return new AuthenticationStub();
 };
 
+const makeValidation = (): Validation => {
+	class ValidationStub implements Validation {
+		validate(input: any): Error {
+			return null;
+		}
+	}
+
+	return new ValidationStub();
+};
+
 const makeFakeRequest = (): HttpRequest => {
 	return {
 		body: {
@@ -41,14 +52,20 @@ interface SutTypes {
 	sut: LoginController;
 	emailValidatorStub: EmailValidator;
 	authenticationStub: Authentication;
+	validationStub: Validation;
 }
 
 const makeSut = (): SutTypes => {
 	const emailValidatorStub = makeEmailValidator();
 	const authenticationStub = makeAuthentication();
-	const sut = new LoginController(emailValidatorStub, authenticationStub);
+	const validationStub = makeValidation();
+	const sut = new LoginController(
+		emailValidatorStub,
+		authenticationStub,
+		validationStub
+	);
 
-	return { sut, emailValidatorStub, authenticationStub };
+	return { sut, emailValidatorStub, authenticationStub, validationStub };
 };
 
 describe("Login Controller", () => {
@@ -145,5 +162,14 @@ describe("Login Controller", () => {
 				accessToken: "any_token",
 			})
 		);
+	});
+
+	it("Should call Validation with correct values", async () => {
+		const { sut, validationStub } = makeSut();
+
+		const validateSpy = jest.spyOn(validationStub, "validate");
+		const httpRequest = makeFakeRequest();
+		await sut.handle(httpRequest);
+		expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
 	});
 });
