@@ -5,6 +5,7 @@ import {
 	serverError,
 	unauthorized,
 } from "../../helpers/http-helper";
+import { Validation } from "../../helpers/validators/validation";
 import {
 	Authentication,
 	Controller,
@@ -16,16 +17,22 @@ import {
 export class LoginController implements Controller {
 	private readonly emailValidator: EmailValidator;
 	private readonly authentication: Authentication;
+	private readonly validation: Validation;
 
-	constructor(emailValidator: EmailValidator, authentication: Authentication) {
+	constructor(
+		emailValidator: EmailValidator,
+		authentication: Authentication,
+		validation: Validation
+	) {
 		this.emailValidator = emailValidator;
 		this.authentication = authentication;
+		this.validation = validation;
 	}
 
 	async handle(httpRquest: HttpRequest): Promise<HttpResponse> {
 		try {
 			const requiredFields = ["email", "password"];
-
+			this.validation.validate(httpRquest.body);
 			for (const field of requiredFields) {
 				if (!httpRquest.body[field]) {
 					return badRequest(new MissingParamError(field));
