@@ -23,8 +23,7 @@ describe("Signup routes", () => {
 				name: "valid_name",
 				email: "valid_mail@mail.com",
 				password: "valid_password",
-				password_confirmation: "valid_password",
-			})
-			.expect(200);
+				passwordConfirmation: "valid_password",
+			}).expect(200);
 	});
 });
