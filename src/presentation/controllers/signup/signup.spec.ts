@@ -7,7 +7,7 @@ import {
 } from "./signup-protocols";
 import { ServerError } from "../../errors";
 import { ok, serverError, badRequest } from "../../helpers/http/http-helper";
-import { Validation } from "../../helpers/validators/validation";
+import { Validation } from "../../protocols/validation";
 
 interface SutType {
 	sut: SignUpController;

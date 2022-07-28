@@ -6,7 +6,7 @@ import {
 } from "../../helpers/http/http-helper";
 import { HttpRequest, Authentication } from "./login-protocols";
 import { LoginController } from "./login";
-import { Validation } from "../../helpers/validators/validation";
+import { Validation } from "../../protocols/validation";
 
 const makeAuthentication = (): Authentication => {
 	class AuthenticationStub implements Authentication {
