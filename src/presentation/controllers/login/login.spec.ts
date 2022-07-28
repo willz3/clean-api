@@ -3,7 +3,7 @@ import {
 	ok,
 	serverError,
 	unauthorized,
-} from "../../helpers/http-helper";
+} from "../../helpers/http/http-helper";
 import { HttpRequest, Authentication } from "./login-protocols";
 import { LoginController } from "./login";
 import { Validation } from "../../helpers/validators/validation";
@@ -46,11 +46,8 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
 	const authenticationStub = makeAuthentication();
 	const validationStub = makeValidation();
-	
-	const sut = new LoginController(
-		authenticationStub,
-		validationStub
-	);
+
+	const sut = new LoginController(authenticationStub, validationStub);
 
 	return { sut, authenticationStub, validationStub };
 };

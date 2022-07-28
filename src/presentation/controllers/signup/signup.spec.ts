@@ -6,7 +6,7 @@ import {
 	HttpRequest,
 } from "./signup-protocols";
 import { ServerError } from "../../errors";
-import { ok, serverError, badRequest } from "../../helpers/http-helper";
+import { ok, serverError, badRequest } from "../../helpers/http/http-helper";
 import { Validation } from "../../helpers/validators/validation";
 
 interface SutType {
