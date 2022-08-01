@@ -159,4 +159,11 @@ describe("DbAuthentication UseCase", () => {
 
 		await expect(promise).rejects.toThrowError();
 	});
+
+	it("Should call LoadAccountByEmailRepository with correct email", async () => {
+		const { sut } = makeSut();
+		const accessToken = await sut.auth(makeFakeAuthentication());
+
+		expect(accessToken).toBe("any_token");
+	});
 });
