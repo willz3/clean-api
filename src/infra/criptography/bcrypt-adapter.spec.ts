@@ -7,6 +7,12 @@ jest.mock("bcrypt", () => ({
 			resolve("hash");
 		});
 	},
+
+	async compare(): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			resolve(true);
+		});
+	},
 }));
 const salt = 12;
 
@@ -27,5 +33,12 @@ describe("BCrypt Adapter", () => {
 		const hash = await sut.hash("any_value");
 
 		expect(hash).toBe("hash");
+	});
+
+	test("Should call compare with correct values", async () => {
+		const sut = makeSut();
+		const hashSpy = jest.spyOn(bcrypt, "compare");
+		await sut.compare("any_value", "any_hash");
+		expect(hashSpy).toHaveBeenCalledWith("any_value", "any_hash");
 	});
 });
