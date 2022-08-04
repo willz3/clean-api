@@ -58,4 +58,13 @@ describe("BCrypt Adapter", () => {
 		const isVailid = await sut.compare("any_value", "any_hash");
 		expect(isVailid).toBeFalsy();
 	});
+
+	test("Should throw if compare throws", async () => {
+		const sut = makeSut();
+		jest
+			.spyOn(bcrypt, "compare")
+			.mockImplementation(() => Promise.reject(new Error()));
+		const promise = sut.compare("any_value", "any_hash");
+		expect(promise).rejects.toThrow();
+	});
 });
