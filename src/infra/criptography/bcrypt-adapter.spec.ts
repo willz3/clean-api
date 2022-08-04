@@ -14,6 +14,7 @@ jest.mock("bcrypt", () => ({
 		});
 	},
 }));
+
 const salt = 12;
 
 const makeSut = (): BcryptAdapter => {
@@ -46,5 +47,15 @@ describe("BCrypt Adapter", () => {
 		const sut = makeSut();
 		const isVailid = await sut.compare("any_value", "any_hash");
 		expect(isVailid).toBeTruthy();
+	});
+
+	test("Should return false when compare fails", async () => {
+		const sut = makeSut();
+		jest
+			.spyOn(bcrypt, "compare")
+			.mockImplementation(() => Promise.resolve(false));
+
+		const isVailid = await sut.compare("any_value", "any_hash");
+		expect(isVailid).toBeFalsy();
 	});
 });
