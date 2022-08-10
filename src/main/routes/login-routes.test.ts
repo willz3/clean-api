@@ -8,14 +8,14 @@ let accountCollection: Collection;
 describe("Login routes", () => {
 	beforeAll(async () => {
 		await MongoHelper.connect(process.env.MONGO_URL);
-		accountCollection = await MongoHelper.getCollection("accounts");
 	});
 
 	afterAll(async () => {
 		await MongoHelper.disconnect();
 	});
 
-	beforeEach(() => async () => {
+	beforeEach(async () => {
+		accountCollection = await MongoHelper.getCollection("accounts");
 		await accountCollection.deleteMany({});
 	});
 
@@ -50,6 +50,16 @@ describe("Login routes", () => {
 					password: "valid_password",
 				})
 				.expect(200);
+		});
+
+		test("Should return 401 with invalid credentials", async () => {
+			await request(app)
+				.post("/api/login")
+				.send({
+					email: "valid_mail@mail.com",
+					password: "valid_password",
+				})
+				.expect(401);
 		});
 	});
 });
