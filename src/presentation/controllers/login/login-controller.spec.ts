@@ -8,8 +8,8 @@ import {
 	HttpRequest,
 	Authentication,
 	AuthenticationModel,
-} from "./login-protocols";
-import { LoginController } from "./login";
+} from "./login-controller-protocols";
+import { LoginController } from "./login-controller";
 import { Validation } from "../../protocols/validation";
 
 const makeAuthentication = (): Authentication => {
