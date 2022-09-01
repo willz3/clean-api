@@ -6,3 +6,10 @@ launch.json
 .idea
 yarn-error.log
 yarn.lock
+.vscode
+package-lock.json
+.env
+.env.*
+!.env.example
+.scannerwork
+.DS_Store
