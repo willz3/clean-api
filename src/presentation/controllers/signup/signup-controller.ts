@@ -2,10 +2,10 @@ import {
 	HttpRequest,
 	HttpResponse,
 	Controller,
-	AddAccount,
-} from "./signup-controller-protocols";
-import { badRequest, ok, serverError } from "../../helpers/http/http-helper";
-import { Validation } from "../../protocols/validation";
+	AddAccount
+} from './signup-controller-protocols';
+import { badRequest, ok, serverError } from '../../helpers/http/http-helper';
+import { Validation } from '../../protocols/validation';
 
 export class SignUpController implements Controller {
 	constructor(
@@ -26,7 +26,7 @@ export class SignUpController implements Controller {
 			const account = await this.addAccount.add({
 				name,
 				email,
-				password,
+				password
 			});
 
 			return ok(account);
