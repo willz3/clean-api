@@ -1,6 +1,6 @@
-import { Collection } from "mongodb";
-import { MongoHelper } from "../helpers/mongo-helper";
-import { LogMongoRepository } from "./log-mongo-repository";
+import { Collection } from 'mongodb';
+import { MongoHelper } from '../helpers/mongo-helper';
+import { LogMongoRepository } from './log-mongo-repository';
 
 let errorCollection: Collection;
 
@@ -8,7 +8,7 @@ const makeSut = (): LogMongoRepository => {
 	return new LogMongoRepository();
 };
 
-describe("Log Mongo Repository", () => {
+describe('Log Mongo Repository', () => {
 	beforeAll(async () => {
 		await MongoHelper.connect(process.env.MONGO_URL);
 	});
@@ -18,13 +18,13 @@ describe("Log Mongo Repository", () => {
 	});
 
 	beforeEach(async () => {
-		errorCollection = await MongoHelper.getCollection("errors");
+		errorCollection = await MongoHelper.getCollection('errors');
 		await errorCollection.deleteMany({});
 	});
 
-	test("Should create an Error log on success", async () => {
+	test('Should create an Error log on success', async () => {
 		const sut = makeSut();
-		await sut.logError("any_error");
+		await sut.logError('any_error');
 		const count = await errorCollection.countDocuments();
 		expect(count).toBe(1);
 	});

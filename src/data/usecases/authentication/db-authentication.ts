@@ -4,8 +4,8 @@ import {
 	UpdateAccessTokenRepository,
 	HashComparer,
 	Encrypter,
-	AuthenticationModel,
-} from "./db-authentication-protocols";
+	AuthenticationModel
+} from './db-authentication-protocols';
 
 export class DbAuthentication implements Authentication {
 	constructor(
@@ -34,10 +34,7 @@ export class DbAuthentication implements Authentication {
 		}
 
 		const accessToken = await this.encrypter.encrypt(account.id);
-		await this.updateAccessTokenRepository.updateAccessToken(
-			account.id,
-			accessToken
-		);
+		await this.updateAccessTokenRepository.updateAccessToken(account.id, accessToken);
 
 		return accessToken;
 	}

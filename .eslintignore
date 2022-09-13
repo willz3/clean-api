@@ -8,3 +8,4 @@ dist
 *.gif
 *.jpg
 *.feature
+./data

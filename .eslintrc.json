@@ -28,9 +28,9 @@
 		"jest/no-focused-tests": "error",
 		"jest/no-identical-title": "error",
 		"jest/prefer-to-have-length": "warn",
+		"jest/valid-expect": "off",
 		"no-use-before-define": "off",
 		"no-useless-constructor": "off",
-		"jest/valid-expect": "error",
 		"no-tabs": [
 			"error",
 			{
@@ -39,7 +39,7 @@
 		],
 		"linebreak-style": [
 			"error",
-			"unix"
+			"windows"
 		],
 		"quotes": [
 			"error",
