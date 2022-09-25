@@ -13,4 +13,4 @@ package-lock.json
 !.env.example
 .scannerwork
 .DS_Store
-data
+./data
