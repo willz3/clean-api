@@ -1,5 +1,5 @@
-import { MissingParamError } from '../../errors';
-import { Validation } from '../../protocols/validation';
+import { MissingParamError } from '../../presentation/errors';
+import { Validation } from '../../presentation/protocols/validation';
 import { ValidationComposite } from './validation-composite';
 
 interface SutTypes {
@@ -9,7 +9,7 @@ interface SutTypes {
 
 const makeValidationStub = (): Validation => {
 	class ValidateStub implements Validation {
-		validate(input: any): Error {
+		validate(input: any): Error | null {
 			return null;
 		}
 	}

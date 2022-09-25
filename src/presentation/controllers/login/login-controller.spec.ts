@@ -7,10 +7,10 @@ import {
 import {
 	HttpRequest,
 	Authentication,
-	AuthenticationModel
+	AuthenticationModel,
+	Validation
 } from './login-controller-protocols';
 import { LoginController } from './login-controller';
-import { Validation } from '../../protocols/validation';
 
 const makeAuthentication = (): Authentication => {
 	class AuthenticationStub implements Authentication {
@@ -24,7 +24,7 @@ const makeAuthentication = (): Authentication => {
 
 const makeValidation = (): Validation => {
 	class ValidationStub implements Validation {
-		validate(input: any): Error {
+		validate(input: any): Error | null {
 			return null;
 		}
 	}

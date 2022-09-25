@@ -5,11 +5,11 @@ import {
 	AccountModel,
 	HttpRequest,
 	Authentication,
-	AuthenticationModel
+	AuthenticationModel,
+	Validation
 } from './signup-controller-protocols';
 import { EmailInUseError, ServerError } from '../../errors';
 import { ok, serverError, badRequest, forbidden } from '../../helpers/http/http-helper';
-import { Validation } from '../../protocols/validation';
 
 interface SutType {
 	sut: SignUpController;
@@ -20,7 +20,7 @@ interface SutType {
 
 const makeValidation = (): Validation => {
 	class ValidationStub implements Validation {
-		validate(input: any): Error {
+		validate(input: any): Error | null {
 			return null;
 		}
 	}
