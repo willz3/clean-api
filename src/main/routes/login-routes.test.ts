@@ -52,11 +52,11 @@ describe('Login routes', () => {
 
 		test('Should return 401 with invalid credentials', async () => {
 			const httpResponse = await request(app).post('/api/login').send({
-				email: 'valid_mail@mail.com',
-				password: 'valid_password'
+				email: 'invalid_mail@mail.com',
+				password: 'invalid_password'
 			});
 
-			expect(httpResponse.statusCode).toBe(200);
+			expect(httpResponse.statusCode).toBe(401);
 		});
 	});
 });
