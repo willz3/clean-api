@@ -10,6 +10,15 @@ describe('DbAddSurvey UseCase', () => {
 
 		expect(addSpy).toHaveBeenCalledWith(surveyData);
 	});
+
+	test('Should throw if AddSurveyRepository throws', async () => {
+		const { sut, addSurveyRepositoryStub } = makeSut();
+		jest
+			.spyOn(addSurveyRepositoryStub, 'add')
+			.mockReturnValueOnce(Promise.reject(new Error()));
+
+		expect(sut.add(makeFakeSurveyData())).rejects.toThrow();
+	});
 });
 
 type SutTypes = {
