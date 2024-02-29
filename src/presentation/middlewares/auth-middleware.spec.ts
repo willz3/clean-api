@@ -21,6 +21,14 @@ describe('Auth middleware', () => {
 
 		expect(loadSpy).toHaveBeenCalledWith('any_token');
 	});
+
+	it('Should return 403 if no x-access-token returns null', async () => {
+		const { sut, loadAccountByTokenStub } = makeSut();
+		jest.spyOn(loadAccountByTokenStub, 'load').mockReturnValueOnce(Promise.resolve(null));
+		const httpResponse = await sut.handle({});
+
+		expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
+	});
 });
 
 type SutTypes = {
@@ -39,7 +47,7 @@ const makeSut = (): SutTypes => {
 
 const makeLoadAccountByTokenStub = (): LoadAccountByToken => {
 	class LoadAccountByTokenStub implements LoadAccountByToken {
-		load(accessToken: string, role?: string): Promise<AccountModel> {
+		load(accessToken: string, role?: string): Promise<AccountModel | null> {
 			return Promise.resolve(makeFakeAccount());
 		}
 	}
