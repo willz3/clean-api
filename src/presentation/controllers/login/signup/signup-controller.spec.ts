@@ -8,8 +8,13 @@ import {
 	AuthenticationModel,
 	Validation
 } from './signup-controller-protocols';
-import { EmailInUseError, ServerError } from '../../errors';
-import { ok, serverError, badRequest, forbidden } from '../../helpers/http/http-helper';
+import { EmailInUseError, ServerError } from '../../../errors';
+import {
+	ok,
+	serverError,
+	badRequest,
+	forbidden
+} from '../../../helpers/http/http-helper';
 
 interface SutType {
 	sut: SignUpController;
@@ -97,14 +102,14 @@ describe('SignUp Controller', () => {
 
 	test('Should return 500 if AddAccount throws', async () => {
 		const { sut, addAccountStub } = makeSut();
-
+		const error = new Error();
 		jest.spyOn(addAccountStub, 'add').mockImplementationOnce(async () => {
 			return new Promise((resolve, reject) => {
-				reject(new Error());
+				reject(error);
 			});
 		});
 		const httpResponse = await sut.handle(makeFakeRequest());
-		expect(httpResponse).toEqual(serverError(new ServerError(null)));
+		expect(httpResponse).toEqual(serverError(new ServerError(error.stack)));
 	});
 
 	test('Should return 200 if valid data is provided', async () => {
