@@ -26,6 +26,7 @@ export class AccountMongoRepository
 				}
 			]
 		});
+
 		return account && MongoHelper.map(account);
 	}
 
