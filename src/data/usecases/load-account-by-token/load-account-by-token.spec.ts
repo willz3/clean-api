@@ -1,5 +1,7 @@
+import { AccountModel } from '../../../domain/model/account';
 import { Decrypter } from '../../protocols/criptography/decrypter';
 import { DbLoadAccountByToken } from './load-account-by-token';
+import { LoadAccountByTokenRepository } from '../../protocols/db/account/load-account-by-token-repository';
 
 describe('DbLoadAccountByToken use case', () => {
 	test('Should call Decrypter with correct values', async () => {
@@ -15,11 +17,19 @@ describe('DbLoadAccountByToken use case', () => {
 		const result = await sut.load('any_token', 'any_role');
 		expect(result).toBeNull();
 	});
+
+	test('Should call LoadAccountByTokenRepository with correct values', async () => {
+		const { sut, loadAccountByTokenRepositoryStub } = makeSut();
+		const loadByTokenSpy = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken');
+		await sut.load('any_token', 'any_role');
+		expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role');
+	});
 });
 
 type SutTypes = {
 	sut: DbLoadAccountByToken;
 	decrypterStub: Decrypter;
+	loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository;
 };
 
 const makeDecrypterStub = (): Decrypter => {
@@ -31,12 +41,32 @@ const makeDecrypterStub = (): Decrypter => {
 	return new DecrypterStub();
 };
 
+const makeFakeAccount = (): AccountModel => {
+	return {
+		id: 'valid_id',
+		name: 'valid_name',
+		email: 'valid_email@mail.com',
+		password: 'hashed_password'
+	};
+};
+
+const makeLoadAccountByTokenRepositoryStub = (): LoadAccountByTokenRepository => {
+	class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
+		loadByToken(token: string, role?: string): Promise<AccountModel | null> {
+			return Promise.resolve(makeFakeAccount());
+		}
+	}
+	return new LoadAccountByTokenRepositoryStub();
+};
+
 const makeSut = (): SutTypes => {
 	const decrypterStub = makeDecrypterStub();
-	const sut = new DbLoadAccountByToken(decrypterStub);
+	const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepositoryStub();
+	const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub);
 
 	return {
 		sut,
-		decrypterStub
+		decrypterStub,
+		loadAccountByTokenRepositoryStub
 	};
 };
