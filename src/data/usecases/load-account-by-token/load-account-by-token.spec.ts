@@ -39,6 +39,13 @@ describe('DbLoadAccountByToken use case', () => {
 		const result = await sut.load('any_token', 'any_role');
 		expect(result).toEqual(makeFakeAccount());
 	});
+
+	test('Should throw if Decrypter throws', async () => {
+		const { sut, decrypterStub } = makeSut();
+		jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.reject(new Error()));
+		const result = sut.load('any_token', 'any_role');
+		expect(result).rejects.toThrow();
+	});
 });
 
 type SutTypes = {
