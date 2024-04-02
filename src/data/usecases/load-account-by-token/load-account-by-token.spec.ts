@@ -7,21 +7,21 @@ describe('DbLoadAccountByToken use case', () => {
 	test('Should call Decrypter with correct values', async () => {
 		const { sut, decrypterStub } = makeSut();
 		const decryptSpy = jest.spyOn(decrypterStub, 'decrypt');
-		await sut.load('any_token', 'any_role');
+		await sut.loadByToken('any_token', 'any_role');
 		expect(decryptSpy).toHaveBeenCalledWith('any_token');
 	});
 
 	test('Should return null if Decrypter returns null', async () => {
 		const { sut, decrypterStub } = makeSut();
 		jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null));
-		const result = await sut.load('any_token', 'any_role');
+		const result = await sut.loadByToken('any_token', 'any_role');
 		expect(result).toBeNull();
 	});
 
 	test('Should call LoadAccountByTokenRepository with correct values', async () => {
 		const { sut, loadAccountByTokenRepositoryStub } = makeSut();
 		const loadByTokenSpy = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken');
-		await sut.load('any_token', 'any_role');
+		await sut.loadByToken('any_token', 'any_role');
 		expect(loadByTokenSpy).toHaveBeenCalledWith('any_token', 'any_role');
 	});
 
@@ -30,20 +30,20 @@ describe('DbLoadAccountByToken use case', () => {
 		jest
 			.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
 			.mockReturnValueOnce(Promise.resolve(null));
-		const result = await sut.load('any_token', 'any_role');
+		const result = await sut.loadByToken('any_token', 'any_role');
 		expect(result).toBeNull();
 	});
 
 	test('Should return an account on success', async () => {
 		const { sut } = makeSut();
-		const result = await sut.load('any_token', 'any_role');
+		const result = await sut.loadByToken('any_token', 'any_role');
 		expect(result).toEqual(makeFakeAccount());
 	});
 
 	test('Should throw if Decrypter throws', async () => {
 		const { sut, decrypterStub } = makeSut();
 		jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.reject(new Error()));
-		const result = sut.load('any_token', 'any_role');
+		const result = sut.loadByToken('any_token', 'any_role');
 		expect(result).rejects.toThrow();
 	});
 });
