@@ -6,8 +6,17 @@ import {
 } from './add-survey-controller-protocols';
 import { AddSurveyController } from './add-survey-controller';
 import { badRequest, noContent, serverError } from '../../../helpers/http/http-helper';
+import MockDate from 'mockdate';
 
 describe('AddSurvey Controller', () => {
+	beforeAll(() => {
+		MockDate.set(new Date());
+	});
+
+	afterAll(() => {
+		MockDate.reset();
+	});
+
 	it('Should call validation with correct values', async () => {
 		const { sut, validationStub } = makeSut();
 		const validateSpy = jest.spyOn(validationStub, 'validate');
@@ -102,6 +111,7 @@ const makeFakeRequest = (): HttpRequest => ({
 				image: 'any_image',
 				answer: 'any_answer'
 			}
-		]
+		],
+		date: new Date()
 	}
 });
