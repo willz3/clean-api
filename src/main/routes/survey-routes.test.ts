@@ -86,4 +86,12 @@ describe('Survey routes', () => {
 			expect(httpResponse.statusCode).toBe(204);
 		});
 	});
+
+	describe('GET /surveys', () => {
+		test('Should return 403 on add survey without accessToken', async () => {
+			const httpResponse = await request(app).get('/api/surveys').expect(403);
+
+			expect(httpResponse.statusCode).toBe(403);
+		});
+	});
 });

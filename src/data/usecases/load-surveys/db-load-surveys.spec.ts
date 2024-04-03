@@ -1,5 +1,5 @@
 import { SurveyModel } from '../../../domain/model/survey';
-import { DbLoadSurveys } from './load-surveys';
+import { DbLoadSurveys } from './db-load-surveys';
 import { LoadSurveysRepository } from '../../protocols/db/survey/load-surveys-repository';
 
 describe('DbLoadSurveys', () => {
