@@ -93,5 +93,34 @@ describe('Survey routes', () => {
 
 			expect(httpResponse.statusCode).toBe(403);
 		});
+
+		test('Should return 204 on success but without surveys', async () => {
+			const res = await accountCollection.insertOne({
+				name: 'valid_name',
+				email: 'valid_mail@mail.com',
+				password: '123',
+				role: 'admin'
+			});
+
+			const id = res.ops[0]._id;
+			const accessToken = sign({ id }, env.jwtSecret);
+
+			await accountCollection.updateOne(
+				{
+					_id: id
+				},
+				{
+					$set: {
+						accessToken
+					}
+				}
+			);
+
+			const httpResponse = await request(app)
+				.get('/api/surveys')
+				.set('x-access-token', accessToken);
+
+			expect(httpResponse.statusCode).toBe(204);
+		});
 	});
 });
