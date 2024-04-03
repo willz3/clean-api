@@ -10,6 +10,12 @@ describe('DbLoadSurveys', () => {
 		expect(loadSpy).toHaveBeenCalled();
 	});
 
+	test('Should return a list of Surveys on success', async () => {
+		const { sut } = makeSut();
+		const result = await sut.load();
+		expect(result).toEqual(makeFakeSurveys());
+	});
+
 	type SutTypes = {
 		sut: DbLoadSurveys;
 		loadSurveysRepositoryStub: LoadSurveysRepository;
