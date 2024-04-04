@@ -8,13 +8,13 @@ import {
 	AuthenticationModel,
 	Validation
 } from './signup-controller-protocols';
-import { EmailInUseError, ServerError } from '../../../errors';
+import { EmailInUseError, ServerError } from '@/presentation/errors';
 import {
 	ok,
 	serverError,
 	badRequest,
 	forbidden
-} from '../../../helpers/http/http-helper';
+} from '@/presentation/helpers/http/http-helper';
 
 interface SutType {
 	sut: SignUpController;

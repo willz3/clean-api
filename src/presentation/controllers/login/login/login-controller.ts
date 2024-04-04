@@ -3,8 +3,8 @@ import {
 	ok,
 	serverError,
 	unauthorized
-} from '../../../helpers/http/http-helper';
-import { Validation } from '../../../protocols/validation';
+} from '@/presentation/helpers/http/http-helper';
+import { Validation } from '@/presentation/protocols/validation';
 import {
 	Authentication,
 	Controller,

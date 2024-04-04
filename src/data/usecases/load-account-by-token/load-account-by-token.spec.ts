@@ -1,7 +1,9 @@
-import { AccountModel } from '../../../domain/model/account';
-import { Decrypter } from '../../protocols/criptography/decrypter';
 import { DbLoadAccountByToken } from './load-account-by-token';
-import { LoadAccountByTokenRepository } from '../../protocols/db/account/load-account-by-token-repository';
+import {
+	Decrypter,
+	AccountModel,
+	LoadAccountByTokenRepository
+} from './load-account-by-token-protocols';
 
 describe('DbLoadAccountByToken use case', () => {
 	test('Should call Decrypter with correct values', async () => {

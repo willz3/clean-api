@@ -10,9 +10,9 @@ import {
 	forbidden,
 	ok,
 	serverError
-} from '../../../helpers/http/http-helper';
-import { Validation } from '../../../protocols/validation';
-import { EmailInUseError } from '../../../errors';
+} from '@/presentation/helpers/http/http-helper';
+import { Validation } from '@/presentation/protocols';
+import { EmailInUseError } from '@/presentation/errors';
 
 export class SignUpController implements Controller {
 	constructor(
