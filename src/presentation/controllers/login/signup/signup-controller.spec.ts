@@ -16,12 +16,12 @@ import {
 	forbidden
 } from '@/presentation/helpers/http/http-helper';
 
-interface SutType {
+type SutTypes = {
 	sut: SignUpController;
 	addAccountStub: AddAccount;
 	validationStub: Validation;
 	authenticationStub: Authentication;
-}
+};
 
 const makeValidation = (): Validation => {
 	class ValidationStub implements Validation {
@@ -62,7 +62,7 @@ const makeAddAccount = (): AddAccount => {
 	return new AddAccountStub();
 };
 
-const makeSut = (): SutType => {
+const makeSut = (): SutTypes => {
 	const addAccountStub = makeAddAccount();
 	const validationStub = makeValidation();
 	const authenticationStub = makeAuthentication();

@@ -85,7 +85,7 @@ const makeSut = (): SutTypes => {
 	};
 };
 
-interface SutTypes {
+type SutTypes = {
 	sut: DbAuthentication;
 	loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
 	hashComparerStub: HashComparer;
