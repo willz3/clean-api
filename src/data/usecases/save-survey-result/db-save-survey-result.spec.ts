@@ -24,6 +24,12 @@ describe('DbSaveSurveyResult UseCase', () => {
 
 		expect(saveSpy).toHaveBeenCalledWith(data);
 	});
+
+	test('Should return SurveyResultModel on success', async () => {
+		const { sut } = makeSut();
+		const result = await sut.save(makeFakeSaveSurveyResultData());
+		expect(result).toEqual(makeFakeSurveyResultData());
+	});
 });
 
 type SutTypes = {
