@@ -1,9 +1,9 @@
 import { Collection } from 'mongodb';
-import { MongoHelper } from '../helpers/mongo-helper';
-import MockDate from 'mockdate';
-import { SurveyModel } from '../survey/survey-mongo-repository-protocols';
 import { AccountModel } from '../account/account-mongo-repository-protocols';
+import { SurveyModel } from '../survey/survey-mongo-repository-protocols';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
+import { MongoHelper } from './survey-result-mongo-repository-protocols';
+import MockDate from 'mockdate';
 
 let surveyCollection: Collection;
 let surveyResultCollection: Collection;
