@@ -91,7 +91,7 @@ type SutTypes = {
 	hashComparerStub: HashComparer;
 	encrypterStub: Encrypter;
 	updateAccessTokenRepositoryStub: UpdateAccessTokenRepository;
-}
+};
 
 describe('DbAuthentication UseCase', () => {
 	it('Should call LoadAccountByEmailRepository with correct email', async () => {

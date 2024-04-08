@@ -45,7 +45,7 @@ type SutTypes = {
 	sut: LoginController;
 	authenticationStub: Authentication;
 	validationStub: Validation;
-}
+};
 
 const makeSut = (): SutTypes => {
 	const authenticationStub = makeAuthentication();
