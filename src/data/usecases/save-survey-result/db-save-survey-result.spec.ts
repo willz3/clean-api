@@ -30,6 +30,15 @@ describe('DbSaveSurveyResult UseCase', () => {
 		const result = await sut.save(makeFakeSaveSurveyResultData());
 		expect(result).toEqual(makeFakeSurveyResultData());
 	});
+
+	test('Should throw if SaveSurveyResultRepository throws', async () => {
+		const { sut, saveSurveyResultRepositoryStub } = makeSut();
+		jest
+			.spyOn(saveSurveyResultRepositoryStub, 'save')
+			.mockReturnValueOnce(Promise.reject(new Error()));
+
+		expect(sut.save(makeFakeSaveSurveyResultData())).rejects.toThrow();
+	});
 });
 
 type SutTypes = {
