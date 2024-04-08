@@ -1,7 +1,6 @@
-import { SurveyModel } from '../../../domain/model/survey';
-import { DbLoadSurveys } from './db-load-surveys';
-import { LoadSurveysRepository } from '../../protocols/db/survey/load-surveys-repository';
 import MockDate from 'mockdate';
+import { DbLoadSurveys } from './db-load-surveys';
+import { LoadSurveysRepository, SurveyModel } from './db-load-surveys-protocols';
 
 describe('DbLoadSurveys', () => {
 	beforeAll(async () => {
