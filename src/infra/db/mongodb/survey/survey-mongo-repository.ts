@@ -1,10 +1,10 @@
-import { LoadSurveyByIdRepository } from '@/data/usecases/load-survey-by-id/db-load-survey-by-id-protocols';
 import {
 	AddSurveyRepository,
 	LoadSurveysRepository,
 	SurveyModel,
 	MongoHelper,
-	AddSurveyModel
+	AddSurveyModel,
+	LoadSurveyByIdRepository
 } from './survey-mongo-repository-protocols';
 
 export class SurveyMongoRepository
