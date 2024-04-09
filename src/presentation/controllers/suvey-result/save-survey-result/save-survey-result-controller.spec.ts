@@ -32,10 +32,27 @@ describe('SaveSurveyResult Controller', () => {
 		expect(httpResponse).toEqual(serverError(new Error()));
 	});
 
+	test('Should return 403 if an invalid answer is provided', async () => {
+		const { sut } = makeSut();
+
+		const result = await sut.handle({
+			params: {
+				surveyId: 'any_survey_id'
+			},
+			body: {
+				answer: 'wrong_answer'
+			}
+		});
+		expect(result).toEqual(forbidden(new InvalidParamError('answer')));
+	});
+
 	const makeFakeRequest = (): HttpRequest => {
 		return {
 			params: {
 				surveyId: 'any_survey_id'
+			},
+			body: {
+				answer: 'any_answer'
 			}
 		};
 	};
