@@ -8,7 +8,8 @@ import {
 	serverError,
 	SaveSurveyResult,
 	SurveyResultModel,
-	SaveSurveyResultModel
+	SaveSurveyResultModel,
+	ok
 } from './save-survey-result-controller-protocols';
 import MockDate from 'mockdate';
 
@@ -74,6 +75,12 @@ describe('SaveSurveyResult Controller', () => {
 		jest.spyOn(saveSurveyResult, 'save').mockReturnValueOnce(Promise.reject(new Error()));
 		const httpResponse = await sut.handle(makeFakeRequest());
 		expect(httpResponse).toEqual(serverError(new Error()));
+	});
+
+	test('Should return 200 on success', async () => {
+		const { sut } = makeSut();
+		const httpResponse = await sut.handle(makeFakeRequest());
+		expect(httpResponse).toEqual(ok(makeFakeSurveyResult()));
 	});
 
 	const makeFakeRequest = (): HttpRequest => {
