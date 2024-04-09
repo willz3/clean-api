@@ -6,6 +6,7 @@ import {
 	LoadAccountByToken,
 	AccountModel
 } from './auth-middleware-protocols';
+import { throwError } from '@/domain/test';
 
 describe('Auth middleware', () => {
 	it('Should return 403 if no x-access-token exists in headers', async () => {
@@ -44,9 +45,7 @@ describe('Auth middleware', () => {
 
 	it('Should return server error if loadAccountByToken throws', async () => {
 		const { sut, loadAccountByTokenStub } = makeSut();
-		jest
-			.spyOn(loadAccountByTokenStub, 'loadByToken')
-			.mockReturnValueOnce(Promise.reject(new Error()));
+		jest.spyOn(loadAccountByTokenStub, 'loadByToken').mockImplementationOnce(throwError);
 		const httpResponse = await sut.handle(makeFakeRequest());
 
 		expect(httpResponse).toEqual(serverError(new Error()));

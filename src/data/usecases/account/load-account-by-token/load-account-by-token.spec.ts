@@ -1,3 +1,4 @@
+import { throwError } from '@/domain/test';
 import { DbLoadAccountByToken } from './load-account-by-token';
 import {
 	Decrypter,
@@ -44,7 +45,7 @@ describe('DbLoadAccountByToken use case', () => {
 
 	test('Should throw if Decrypter throws', async () => {
 		const { sut, decrypterStub } = makeSut();
-		jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.reject(new Error()));
+		jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(throwError);
 		const result = sut.loadByToken('any_token', 'any_role');
 		expect(result).rejects.toThrow();
 	});

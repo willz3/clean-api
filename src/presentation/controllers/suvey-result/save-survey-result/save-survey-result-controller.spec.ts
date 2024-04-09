@@ -1,3 +1,4 @@
+import { throwError } from '@/domain/test';
 import { SaveSurveyResultController } from './save-survey-result-controller';
 import {
 	HttpRequest,
@@ -37,9 +38,7 @@ describe('SaveSurveyResult Controller', () => {
 
 	test('Should return 500 on if load survey by id throws', async () => {
 		const { sut, loadSurveyByIdStub } = makeSut();
-		jest
-			.spyOn(loadSurveyByIdStub, 'loadById')
-			.mockReturnValueOnce(Promise.reject(new Error()));
+		jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(throwError);
 		const httpResponse = await sut.handle(makeFakeRequest());
 		expect(httpResponse).toEqual(serverError(new Error()));
 	});
@@ -72,7 +71,7 @@ describe('SaveSurveyResult Controller', () => {
 
 	test('Should return 500 on if SaveSurveyResult throws', async () => {
 		const { sut, saveSurveyResult } = makeSut();
-		jest.spyOn(saveSurveyResult, 'save').mockReturnValueOnce(Promise.reject(new Error()));
+		jest.spyOn(saveSurveyResult, 'save').mockImplementationOnce(throwError);
 		const httpResponse = await sut.handle(makeFakeRequest());
 		expect(httpResponse).toEqual(serverError(new Error()));
 	});

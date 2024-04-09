@@ -1,6 +1,7 @@
 import { AddSurveyParams, AddSurveyRepository } from './db-add-survey-protocols';
 import { DbAddSurvey } from './db-add-survey';
 import MockDate from 'mockdate';
+import { throwError } from '@/domain/test';
 
 describe('DbAddSurvey UseCase', () => {
 	beforeAll(() => {
@@ -22,9 +23,7 @@ describe('DbAddSurvey UseCase', () => {
 
 	test('Should throw if AddSurveyRepository throws', async () => {
 		const { sut, addSurveyRepositoryStub } = makeSut();
-		jest
-			.spyOn(addSurveyRepositoryStub, 'add')
-			.mockReturnValueOnce(Promise.reject(new Error()));
+		jest.spyOn(addSurveyRepositoryStub, 'add').mockImplementationOnce(throwError);
 
 		expect(sut.add(makeFakeSurveyData())).rejects.toThrow();
 	});

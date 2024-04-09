@@ -1,3 +1,4 @@
+import { throwError } from '@/domain/test';
 import { SignUpController } from './signup-controller';
 import {
 	AddAccount,
@@ -151,9 +152,7 @@ describe('SignUp Controller', () => {
 	it('Should return 500 if Authentication throws', async () => {
 		const { sut, authenticationStub } = makeSut();
 
-		jest
-			.spyOn(authenticationStub, 'auth')
-			.mockReturnValueOnce(Promise.reject(new Error()));
+		jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(throwError);
 
 		const httpResponse = await sut.handle(makeFakeRequest());
 		expect(httpResponse).toEqual(serverError(new Error()));

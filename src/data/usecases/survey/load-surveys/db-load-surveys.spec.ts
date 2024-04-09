@@ -1,6 +1,7 @@
 import MockDate from 'mockdate';
 import { DbLoadSurveys } from './db-load-surveys';
 import { LoadSurveysRepository, SurveyModel } from './db-load-surveys-protocols';
+import { throwError } from '@/domain/test';
 
 describe('DbLoadSurveys', () => {
 	beforeAll(async () => {
@@ -27,9 +28,7 @@ describe('DbLoadSurveys', () => {
 	test('Should throw if repository throws', async () => {
 		const { sut, loadSurveysRepositoryStub } = makeSut();
 
-		jest
-			.spyOn(loadSurveysRepositoryStub, 'loadAll')
-			.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
+		jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockImplementationOnce(throwError);
 
 		const promise = sut.load();
 		await expect(promise).rejects.toThrow();
