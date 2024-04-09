@@ -2,7 +2,7 @@ import {
 	HttpRequest,
 	Validation,
 	AddSurvey,
-	AddSurveyModel
+	AddSurveyParams
 } from './add-survey-controller-protocols';
 import { AddSurveyController } from './add-survey-controller';
 import {
@@ -80,7 +80,7 @@ type SutTypes = {
 
 const makeAddSurveyStub = (): AddSurvey => {
 	class AddSurveyStub implements AddSurvey {
-		async add(input: AddSurveyModel): Promise<void> {
+		async add(input: AddSurveyParams): Promise<void> {
 			return Promise.resolve();
 		}
 	}

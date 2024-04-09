@@ -4,7 +4,7 @@ import {
 	UpdateAccessTokenRepository,
 	HashComparer,
 	Encrypter,
-	AuthenticationModel
+	AuthenticationParams
 } from './db-authentication-protocols';
 
 export class DbAuthentication implements Authentication {
@@ -15,7 +15,7 @@ export class DbAuthentication implements Authentication {
 		private readonly encrypter: Encrypter
 	) {}
 
-	async auth(authentication: AuthenticationModel): Promise<string | null> {
+	async auth(authentication: AuthenticationParams): Promise<string | null> {
 		const account = await this.loadAccountByEmailRepository.loadByEmail(
 			authentication.email
 		);

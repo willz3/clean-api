@@ -5,7 +5,7 @@ import {
 	LoadAccountByToken,
 	AccountModel,
 	MongoHelper,
-	AddAccountModel
+	AddAccountParams
 } from './account-mongo-repository-protocols';
 
 export class AccountMongoRepository
@@ -32,7 +32,7 @@ export class AccountMongoRepository
 		return account && MongoHelper.map(account);
 	}
 
-	async add(accountData: AddAccountModel): Promise<AccountModel> {
+	async add(accountData: AddAccountParams): Promise<AccountModel> {
 		const accountCollection = await MongoHelper.getCollection('accounts');
 		const result = await accountCollection.insertOne(accountData);
 		return MongoHelper.map(result.ops[0]);

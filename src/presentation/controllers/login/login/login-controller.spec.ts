@@ -7,14 +7,14 @@ import {
 import {
 	HttpRequest,
 	Authentication,
-	AuthenticationModel,
+	AuthenticationParams,
 	Validation
 } from './login-controller-protocols';
 import { LoginController } from './login-controller';
 
 const makeAuthentication = (): Authentication => {
 	class AuthenticationStub implements Authentication {
-		async auth(authentication: AuthenticationModel): Promise<string> {
+		async auth(authentication: AuthenticationParams): Promise<string> {
 			return Promise.resolve('any_token');
 		}
 	}
