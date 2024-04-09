@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import {
 	AddSurveyRepository,
 	LoadSurveysRepository,
@@ -24,7 +25,7 @@ export class SurveyMongoRepository
 	async loadById(id: string): Promise<SurveyModel> {
 		const surveyCollection = await MongoHelper.getCollection('surveys');
 		const survey = await surveyCollection.findOne({
-			_id: id
+			_id: new ObjectId(id)
 		});
 
 		return survey && MongoHelper.map(survey);
