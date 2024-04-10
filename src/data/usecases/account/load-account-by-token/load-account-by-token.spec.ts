@@ -1,10 +1,10 @@
-import { throwError } from '@/domain/test';
+import { mockAccountModel, throwError } from '@/domain/test';
 import { DbLoadAccountByToken } from './load-account-by-token';
 import {
 	Decrypter,
-	AccountModel,
 	LoadAccountByTokenRepository
 } from './load-account-by-token-protocols';
+import { mockDecrypter, mockLoadAccountByTokenRepository } from '@/data/test';
 
 describe('DbLoadAccountByToken use case', () => {
 	test('Should call Decrypter with correct values', async () => {
@@ -40,7 +40,7 @@ describe('DbLoadAccountByToken use case', () => {
 	test('Should return an account on success', async () => {
 		const { sut } = makeSut();
 		const result = await sut.loadByToken('any_token', 'any_role');
-		expect(result).toEqual(makeFakeAccount());
+		expect(result).toEqual(mockAccountModel());
 	});
 
 	test('Should throw if Decrypter throws', async () => {
@@ -57,36 +57,9 @@ type SutTypes = {
 	loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository;
 };
 
-const makeDecrypterStub = (): Decrypter => {
-	class DecrypterStub implements Decrypter {
-		decrypt(value: string): Promise<string> {
-			return Promise.resolve('any_token');
-		}
-	}
-	return new DecrypterStub();
-};
-
-const makeFakeAccount = (): AccountModel => {
-	return {
-		id: 'valid_id',
-		name: 'valid_name',
-		email: 'valid_email@mail.com',
-		password: 'hashed_password'
-	};
-};
-
-const makeLoadAccountByTokenRepositoryStub = (): LoadAccountByTokenRepository => {
-	class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-		loadByToken(token: string, role?: string): Promise<AccountModel | null> {
-			return Promise.resolve(makeFakeAccount());
-		}
-	}
-	return new LoadAccountByTokenRepositoryStub();
-};
-
 const makeSut = (): SutTypes => {
-	const decrypterStub = makeDecrypterStub();
-	const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepositoryStub();
+	const decrypterStub = mockDecrypter();
+	const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepository();
 	const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub);
 
 	return {

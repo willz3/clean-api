@@ -1,3 +1,4 @@
+import { AuthenticationParams } from '@/data/usecases/account/authentication/db-authentication-protocols';
 import { AccountModel } from '@/domain/model/account';
 import { AddAccountParams } from '@/domain/usecases/account/add-account';
 
@@ -10,7 +11,7 @@ const mockAccountModel = (): AccountModel => {
 	};
 };
 
-const mockAccountParams = (): AddAccountParams => {
+const mockAddAccountParams = (): AddAccountParams => {
 	return {
 		name: 'any_name',
 		email: 'any_email@mail.com',
@@ -18,4 +19,11 @@ const mockAccountParams = (): AddAccountParams => {
 	};
 };
 
-export { mockAccountModel, mockAccountParams };
+const mockAuthentication = (): AuthenticationParams => {
+	return {
+		email: 'any_email@mail.com',
+		password: 'any_password'
+	};
+};
+
+export { mockAccountModel, mockAddAccountParams, mockAuthentication };
