@@ -1,10 +1,11 @@
 import { badRequest, forbidden, notFound, serverError, unauthorized } from './components';
-import { loginPath, surveyPath } from './paths';
+import { loginPath, signUpPath, surveyPath } from './paths';
 import {
 	accountSchema,
 	apiKeyAuthSchema,
 	errorSchema,
 	loginParamsSchema,
+	signUpParamsSchema,
 	surveyAnswerSchema,
 	surveySchema,
 	surveysSchema
@@ -36,7 +37,8 @@ export default {
 	],
 	paths: {
 		'/login': loginPath,
-		'/surveys': surveyPath
+		'/surveys': surveyPath,
+		'/sign-up': signUpPath
 	},
 	schemas: {
 		account: accountSchema,
@@ -44,7 +46,8 @@ export default {
 		error: errorSchema,
 		surveys: surveysSchema,
 		survey: surveySchema,
-		surveyAnswer: surveyAnswerSchema
+		surveyAnswer: surveyAnswerSchema,
+		signUpParams: signUpParamsSchema
 	},
 	components: {
 		securitySchemes: {
