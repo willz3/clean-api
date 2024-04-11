@@ -10,4 +10,4 @@ type SurveysAnswerModel = {
 	answer: string;
 };
 
-export { SurveyModel, SurveysAnswerModel };
+export { SurveyModel };
