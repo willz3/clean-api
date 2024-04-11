@@ -8,7 +8,8 @@ import {
 	signUpParamsSchema,
 	surveyAnswerSchema,
 	surveySchema,
-	surveysSchema
+	surveysSchema,
+	addSurveyParamsSchema
 } from './schemas';
 
 export default {
@@ -47,6 +48,7 @@ export default {
 		surveys: surveysSchema,
 		survey: surveySchema,
 		surveyAnswer: surveyAnswerSchema,
+		addSUrveyParams: addSurveyParamsSchema,
 		signUpParams: signUpParamsSchema
 	},
 	components: {
