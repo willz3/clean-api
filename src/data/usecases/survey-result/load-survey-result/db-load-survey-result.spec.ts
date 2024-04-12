@@ -1,7 +1,6 @@
 import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result-repository';
 import { DbLoadSurveyResult } from './db-load-survey-result';
-import { SurveyResultModel } from '@/domain/model/survey-result';
-import { mockSurveyResultModel } from '@/domain/test';
+import { mockLoadSurveyResultRepository } from '@/data/test';
 
 describe('DbLoadSurveyResult use case', () => {
 	test('Should call LoadSurveyResultRepository with correct values', async () => {
@@ -26,14 +25,5 @@ describe('DbLoadSurveyResult use case', () => {
 			sut,
 			loadSurveyResultRepositoryStub
 		};
-	};
-
-	const mockLoadSurveyResultRepository = (): LoadSurveyResultRepository => {
-		class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
-			async loadBySurveyId(surveyId: string): Promise<SurveyResultModel> {
-				return Promise.resolve(mockSurveyResultModel());
-			}
-		}
-		return new LoadSurveyResultRepositoryStub();
 	};
 });
