@@ -6,8 +6,8 @@ import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/lo
 
 const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
 	class SaveSurveyResultRepository implements SaveSurveyResultRepository {
-		async save(data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-			return mockSurveyResultModel();
+		async save(data: SaveSurveyResultParams): Promise<void> {
+			return null;
 		}
 	}
 

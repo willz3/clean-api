@@ -1,5 +1,8 @@
 import { DbSaveSurveyResult } from './db-save-survey-result';
-import { SaveSurveyResultRepository } from './db-save-survey-result-protocols';
+import {
+	LoadSurveyResultRepository,
+	SaveSurveyResultRepository
+} from './db-save-survey-result-protocols';
 
 import MockDate from 'mockdate';
 import {
@@ -7,7 +10,10 @@ import {
 	mockSurveyResultModel,
 	throwError
 } from '@/domain/test';
-import { mockSaveSurveyResultRepository } from '@/data/test';
+import {
+	mockLoadSurveyResultRepository,
+	mockSaveSurveyResultRepository
+} from '@/data/test';
 
 describe('DbSaveSurveyResult UseCase', () => {
 	beforeAll(() => {
@@ -27,6 +33,15 @@ describe('DbSaveSurveyResult UseCase', () => {
 		expect(saveSpy).toHaveBeenCalledWith(data);
 	});
 
+	test('Should call LoadSurveyResultRepository with correct values', async () => {
+		const { sut, loadSurveyResultRepositoryStub } = makeSut();
+		const loadSpy = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId');
+		const data = mockSaveSurveyResultParams();
+		await sut.save(data);
+
+		expect(loadSpy).toHaveBeenCalledWith(data.surveyId);
+	});
+
 	test('Should return SurveyResultModel on success', async () => {
 		const { sut } = makeSut();
 		const result = await sut.save(mockSaveSurveyResultParams());
@@ -44,13 +59,19 @@ describe('DbSaveSurveyResult UseCase', () => {
 type SutTypes = {
 	sut: DbSaveSurveyResult;
 	saveSurveyResultRepositoryStub: SaveSurveyResultRepository;
+	loadSurveyResultRepositoryStub: LoadSurveyResultRepository;
 };
 
 const makeSut = (): SutTypes => {
 	const saveSurveyResultRepositoryStub = mockSaveSurveyResultRepository();
-	const sut = new DbSaveSurveyResult(saveSurveyResultRepositoryStub);
+	const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository();
+	const sut = new DbSaveSurveyResult(
+		saveSurveyResultRepositoryStub,
+		loadSurveyResultRepositoryStub
+	);
 	return {
 		sut,
-		saveSurveyResultRepositoryStub
+		saveSurveyResultRepositoryStub,
+		loadSurveyResultRepositoryStub
 	};
 };
