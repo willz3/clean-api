@@ -62,6 +62,14 @@ describe('Survey routes', () => {
 		});
 	});
 
+	describe('GET /surveys/:surveyId/results', () => {
+		test('Should return 403 on load survey result without accessToken', async () => {
+			const httpResponse = await request(app).get('/api/surveys/any_id/results');
+
+			expect(httpResponse.statusCode).toBe(403);
+		});
+	});
+
 	const makeAccessToken = async (): Promise<string> => {
 		const res = await accountCollection.insertOne({
 			name: 'valid_name',
