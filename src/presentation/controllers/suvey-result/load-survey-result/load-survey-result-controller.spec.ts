@@ -10,8 +10,16 @@ import {
 	serverError
 } from './load-survey-result-controller-protocols';
 import { mockLoadSurveyById, mockLoadSurveyResult } from '@/presentation/test';
+import MockDate from 'mockdate';
 
 describe('LoadSurveyResult Controller', () => {
+	beforeAll(() => {
+		MockDate.set(new Date());
+	});
+
+	afterAll(() => {
+		MockDate.reset();
+	});
 	test('Should call LoadSurveyById with correct value', async () => {
 		const { sut, loadSurveyByIdStub } = makeSut();
 		const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById');
