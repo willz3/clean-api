@@ -2,10 +2,10 @@ import {
 	AddAccountRepository,
 	LoadAccountByEmailRepository,
 	UpdateAccessTokenRepository,
-	LoadAccountByToken,
+	LoadAccountByTokenRepository,
+	AddAccountParams,
 	AccountModel,
-	MongoHelper,
-	AddAccountParams
+	MongoHelper
 } from './account-mongo-repository-protocols';
 
 export class AccountMongoRepository
@@ -13,12 +13,38 @@ export class AccountMongoRepository
 		AddAccountRepository,
 		LoadAccountByEmailRepository,
 		UpdateAccessTokenRepository,
-		LoadAccountByToken
+		LoadAccountByTokenRepository
 {
-	async loadByToken(accessToken: string, role?: string): Promise<AccountModel> {
+	async add(data: AddAccountParams): Promise<AccountModel> {
+		const accountCollection = await MongoHelper.getCollection('accounts');
+		const result = await accountCollection.insertOne(data);
+		return MongoHelper.map(result.ops[0]);
+	}
+
+	async loadByEmail(email: string): Promise<AccountModel> {
+		const accountCollection = await MongoHelper.getCollection('accounts');
+		const account = await accountCollection.findOne({ email });
+		return account && MongoHelper.map(account);
+	}
+
+	async updateAccessToken(id: string, token: string): Promise<void> {
+		const accountCollection = await MongoHelper.getCollection('accounts');
+		await accountCollection.updateOne(
+			{
+				_id: id
+			},
+			{
+				$set: {
+					accessToken: token
+				}
+			}
+		);
+	}
+
+	async loadByToken(token: string, role?: string): Promise<AccountModel> {
 		const accountCollection = await MongoHelper.getCollection('accounts');
 		const account = await accountCollection.findOne({
-			accessToken,
+			accessToken: token,
 			$or: [
 				{
 					role
@@ -28,31 +54,6 @@ export class AccountMongoRepository
 				}
 			]
 		});
-
 		return account && MongoHelper.map(account);
-	}
-
-	async add(accountData: AddAccountParams): Promise<AccountModel> {
-		const accountCollection = await MongoHelper.getCollection('accounts');
-		const result = await accountCollection.insertOne(accountData);
-		return MongoHelper.map(result.ops[0]);
-	}
-
-	async loadByEmail(email: string): Promise<AccountModel | null> {
-		const accountCollection = await MongoHelper.getCollection('accounts');
-		const account = await accountCollection.findOne({ email });
-		return account && MongoHelper.map(account);
-	}
-
-	async updateAccessToken(id: string, token: string): Promise<void> {
-		const accountCollection = await MongoHelper.getCollection('accounts');
-		await accountCollection.updateOne(
-			{ _id: id },
-			{
-				$set: {
-					accessToken: token
-				}
-			}
-		);
 	}
 }

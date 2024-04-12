@@ -1,10 +1,10 @@
 import {
 	Authentication,
+	AuthenticationParams,
 	LoadAccountByEmailRepository,
-	UpdateAccessTokenRepository,
 	HashComparer,
 	Encrypter,
-	AuthenticationParams
+	UpdateAccessTokenRepository
 } from './db-authentication-protocols';
 
 export class DbAuthentication implements Authentication {
@@ -15,27 +15,21 @@ export class DbAuthentication implements Authentication {
 		private readonly encrypter: Encrypter
 	) {}
 
-	async auth(authentication: AuthenticationParams): Promise<string | null> {
+	async auth(authenticationParams: AuthenticationParams): Promise<string> {
 		const account = await this.loadAccountByEmailRepository.loadByEmail(
-			authentication.email
+			authenticationParams.email
 		);
-
-		if (!account) {
-			return null;
+		if (account) {
+			const isValid = await this.hashComparer.compare(
+				authenticationParams.password,
+				account.password
+			);
+			if (isValid) {
+				const accessToken = await this.encrypter.encrypt(account.id);
+				await this.updateAccessTokenRepository.updateAccessToken(account.id, accessToken);
+				return accessToken;
+			}
 		}
-
-		const isValid = await this.hashComparer.compare(
-			authentication.password,
-			account.password
-		);
-
-		if (!isValid) {
-			return null;
-		}
-
-		const accessToken = await this.encrypter.encrypt(account.id);
-		await this.updateAccessTokenRepository.updateAccessToken(account.id, accessToken);
-
-		return accessToken;
+		return null;
 	}
 }

@@ -1,29 +1,22 @@
-import { AuthenticationParams } from '@/data/usecases/account/authentication/db-authentication-protocols';
 import { AccountModel } from '@/domain/model/account';
 import { AddAccountParams } from '@/domain/usecases/account/add-account';
+import { AuthenticationParams } from '@/domain/usecases/account/authentication';
+import faker from 'faker';
 
-const mockAccountModel = (): AccountModel => {
-	return {
-		id: 'any_id',
-		name: 'any_name',
-		email: 'any_email@mail.com',
-		password: 'hashed_password'
-	};
-};
+export const mockAddAccountParams = (): AddAccountParams => ({
+	name: faker.name.findName(),
+	email: faker.internet.email(),
+	password: faker.internet.password()
+});
 
-const mockAddAccountParams = (): AddAccountParams => {
-	return {
-		name: 'any_name',
-		email: 'any_email@mail.com',
-		password: 'any_password'
-	};
-};
+export const mockAccountModel = (): AccountModel => ({
+	id: faker.random.uuid(),
+	name: faker.name.findName(),
+	email: faker.internet.email(),
+	password: faker.internet.password()
+});
 
-const mockAuthentication = (): AuthenticationParams => {
-	return {
-		email: 'any_email@mail.com',
-		password: 'any_password'
-	};
-};
-
-export { mockAccountModel, mockAddAccountParams, mockAuthentication };
+export const mockAuthenticationParams = (): AuthenticationParams => ({
+	email: faker.internet.email(),
+	password: faker.internet.password()
+});

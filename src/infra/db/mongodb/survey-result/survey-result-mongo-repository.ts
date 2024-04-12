@@ -4,9 +4,9 @@ import {
 	SaveSurveyResultParams,
 	SurveyResultModel,
 	MongoHelper,
-	QueryBuilder
+	QueryBuilder,
+	LoadSurveyResultRepository
 } from './survey-result-mongo-repository-protocols';
-import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result-repository';
 
 export class SurveyResultMongoRepository
 	implements SaveSurveyResultRepository, LoadSurveyResultRepository

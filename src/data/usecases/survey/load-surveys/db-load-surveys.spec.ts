@@ -1,51 +1,47 @@
-import MockDate from 'mockdate';
 import { DbLoadSurveys } from './db-load-surveys';
-import { LoadSurveysRepository } from './db-load-surveys-protocols';
-import { mockSurveyModels, throwError } from '@/domain/test';
-import { mockLoadSurveysRepository } from '@/data/test';
+import { LoadSurveysRepositorySpy } from '@/data/test';
+import { throwError } from '@/domain/test';
+import MockDate from 'mockdate';
+
+type SutTypes = {
+	sut: DbLoadSurveys;
+	loadSurveysRepositorySpy: LoadSurveysRepositorySpy;
+};
+
+const makeSut = (): SutTypes => {
+	const loadSurveysRepositorySpy = new LoadSurveysRepositorySpy();
+	const sut = new DbLoadSurveys(loadSurveysRepositorySpy);
+	return {
+		sut,
+		loadSurveysRepositorySpy
+	};
+};
 
 describe('DbLoadSurveys', () => {
-	beforeAll(async () => {
+	beforeAll(() => {
 		MockDate.set(new Date());
 	});
 
-	afterAll(async () => {
+	afterAll(() => {
 		MockDate.reset();
 	});
 
 	test('Should call LoadSurveysRepository', async () => {
-		const { sut, loadSurveysRepositoryStub } = makeSut();
-		const loadSpy = jest.spyOn(loadSurveysRepositoryStub, 'loadAll');
+		const { sut, loadSurveysRepositorySpy } = makeSut();
 		await sut.load();
-		expect(loadSpy).toHaveBeenCalled();
+		expect(loadSurveysRepositorySpy.callsCount).toBe(1);
 	});
 
 	test('Should return a list of Surveys on success', async () => {
-		const { sut } = makeSut();
-		const result = await sut.load();
-		expect(result).toEqual(mockSurveyModels());
+		const { sut, loadSurveysRepositorySpy } = makeSut();
+		const surveys = await sut.load();
+		expect(surveys).toEqual(loadSurveysRepositorySpy.surveyModels);
 	});
 
-	test('Should throw if repository throws', async () => {
-		const { sut, loadSurveysRepositoryStub } = makeSut();
-
-		jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockImplementationOnce(throwError);
-
+	test('Should throw if LoadSurveysRepository throws', async () => {
+		const { sut, loadSurveysRepositorySpy } = makeSut();
+		jest.spyOn(loadSurveysRepositorySpy, 'loadAll').mockImplementationOnce(throwError);
 		const promise = sut.load();
 		await expect(promise).rejects.toThrow();
 	});
-
-	type SutTypes = {
-		sut: DbLoadSurveys;
-		loadSurveysRepositoryStub: LoadSurveysRepository;
-	};
-
-	const makeSut = (): SutTypes => {
-		const loadSurveysRepositoryStub = mockLoadSurveysRepository();
-		const sut = new DbLoadSurveys(loadSurveysRepositoryStub);
-		return {
-			sut,
-			loadSurveysRepositoryStub
-		};
-	};
 });
