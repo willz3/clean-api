@@ -20,7 +20,7 @@ const makeControllerStub = (): Controller => {
 	return new ControllerStub();
 };
 
-const makeFakeRequest = (): HttpRequest => {
+const mockRequest = (): HttpRequest => {
 	return {
 		body: {
 			name: 'any_name',
@@ -54,14 +54,14 @@ describe('LogController Decorator', () => {
 		const { sut, controllerStub } = makeSut();
 		const handleSpy = jest.spyOn(controllerStub, 'handle');
 
-		const httpRequest = makeFakeRequest();
+		const httpRequest = mockRequest();
 		await sut.handle(httpRequest);
 		expect(handleSpy).toHaveBeenCalledWith(httpRequest);
 	});
 
 	test('Should return the same result of the controller', async () => {
 		const { sut } = makeSut();
-		const httpResponse = await sut.handle(makeFakeRequest());
+		const httpResponse = await sut.handle(mockRequest());
 		expect(httpResponse).toEqual(ok(mockAccountModel()));
 	});
 
@@ -75,7 +75,7 @@ describe('LogController Decorator', () => {
 				resolve(makeFakeServerError());
 			})
 		);
-		await sut.handle(makeFakeRequest());
+		await sut.handle(mockRequest());
 		expect(logSpy).toHaveBeenCalledWith('any_stack');
 	});
 });
