@@ -3,6 +3,7 @@ type SurveyModel = {
 	question: string;
 	answers: SurveysAnswerModel[];
 	date: Date;
+	didAnswer?: boolean;
 };
 
 type SurveysAnswerModel = {
