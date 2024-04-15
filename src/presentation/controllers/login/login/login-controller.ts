@@ -5,28 +5,23 @@ import {
 	unauthorized
 } from '@/presentation/helpers/http/http-helper';
 import { Validation } from '@/presentation/protocols/validation';
-import {
-	Authentication,
-	Controller,
-	HttpRequest,
-	HttpResponse
-} from './login-controller-protocols';
+import { Authentication, Controller, HttpResponse } from './login-controller-protocols';
 
-export class LoginController implements Controller {
+export class LoginController implements Controller<LoginController.Request> {
 	constructor(
 		private readonly authentication: Authentication,
 		private readonly validation: Validation
 	) {}
 
-	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+	async handle(request: LoginController.Request): Promise<HttpResponse> {
 		try {
-			const error = this.validation.validate(httpRequest.body);
+			const error = this.validation.validate(request);
 
 			if (error) {
 				return badRequest(error);
 			}
 
-			const { email, password } = httpRequest.body;
+			const { email, password } = request;
 
 			const authenticationModel = await this.authentication.auth({ email, password });
 
@@ -39,4 +34,11 @@ export class LoginController implements Controller {
 			return serverError(error);
 		}
 	}
+}
+
+export namespace LoginController {
+	export type Request = {
+		email: string;
+		password: string;
+	};
 }

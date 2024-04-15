@@ -1,6 +1,5 @@
 import {
 	Controller,
-	HttpRequest,
 	HttpResponse,
 	InvalidParamError,
 	LoadSurveyById,
@@ -10,17 +9,17 @@ import {
 	serverError
 } from './save-survey-result-controller-protocols';
 
-export class SaveSurveyResultController implements Controller {
+export class SaveSurveyResultController
+	implements Controller<SaveSurveyResultController.Request>
+{
 	constructor(
 		private readonly loadSurveyById: LoadSurveyById,
 		private readonly saveSurveyResult: SaveSurveyResult
 	) {}
 
-	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+	async handle(request: SaveSurveyResultController.Request): Promise<HttpResponse> {
 		try {
-			const { answer } = httpRequest.body;
-			const { surveyId } = httpRequest.params;
-			const { accountId } = httpRequest;
+			const { surveyId, answer, accountId } = request;
 			const survey = await this.loadSurveyById.loadById(surveyId);
 
 			if (!survey) {
@@ -43,4 +42,12 @@ export class SaveSurveyResultController implements Controller {
 			return serverError(error);
 		}
 	}
+}
+
+export namespace SaveSurveyResultController {
+	export type Request = {
+		surveyId: string;
+		accountId: string;
+		answer: string;
+	};
 }

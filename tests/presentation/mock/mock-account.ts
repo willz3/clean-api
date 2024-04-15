@@ -1,32 +1,29 @@
-import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-account';
-import {
-	Authentication,
-	AuthenticationParams
-} from '@/domain/usecases/account/authentication';
+import { AddAccount } from '@/domain/usecases/account/add-account';
+import { Authentication } from '@/domain/usecases/account/authentication';
 import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token';
-import { AccountModel } from '@/domain/model/account';
 import { mockAccountModel } from '../../domain/mock';
 import faker from 'faker';
-import { AuthenticationModel } from '@/domain/model/authentication';
 
 export class AddAccountSpy implements AddAccount {
-	accountModel = mockAccountModel();
-	addAccountParams: AddAccountParams;
+	isValid = true;
+	addAccountParams: AddAccount.Params;
 
-	async add(account: AddAccountParams): Promise<AccountModel> {
+	async add(account: AddAccount.Params): Promise<AddAccount.Result> {
 		this.addAccountParams = account;
-		return Promise.resolve(this.accountModel);
+		return this.isValid;
 	}
 }
 
 export class AuthenticationSpy implements Authentication {
-	authenticationParams: AuthenticationParams;
+	authenticationParams: Authentication.Params;
 	authenticationModel = {
 		accessToken: faker.random.uuid(),
 		name: faker.name.findName()
 	};
 
-	async auth(authenticationParams: AuthenticationParams): Promise<AuthenticationModel> {
+	async auth(
+		authenticationParams: Authentication.Params
+	): Promise<Authentication.Result> {
 		this.authenticationParams = authenticationParams;
 		return Promise.resolve(this.authenticationModel);
 	}
@@ -37,7 +34,7 @@ export class LoadAccountByTokenSpy implements LoadAccountByToken {
 	accessToken: string;
 	role: string;
 
-	async load(accessToken: string, role?: string): Promise<AccountModel> {
+	async load(accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
 		this.accessToken = accessToken;
 		this.role = role;
 		return Promise.resolve(this.accountModel);

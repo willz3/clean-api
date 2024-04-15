@@ -6,25 +6,24 @@ import {
 import {
 	AddSurvey,
 	Controller,
-	HttpRequest,
 	HttpResponse,
 	Validation
 } from './add-survey-controller-protocols';
 
-export class AddSurveyController implements Controller {
+export class AddSurveyController implements Controller<AddSurveyController.Request> {
 	constructor(
 		private readonly validator: Validation,
 		private readonly addSurvey: AddSurvey
 	) {}
 
-	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+	async handle(request: AddSurveyController.Request): Promise<HttpResponse> {
 		try {
-			const error = this.validator.validate(httpRequest.body);
+			const error = this.validator.validate(request);
 			if (error) {
 				return badRequest(error);
 			}
 
-			const { question, answers } = httpRequest.body;
+			const { question, answers } = request;
 
 			await this.addSurvey.add({
 				question,
@@ -37,4 +36,16 @@ export class AddSurveyController implements Controller {
 			return serverError(error);
 		}
 	}
+}
+
+export namespace AddSurveyController {
+	export type Request = {
+		question: string;
+		answers: Array<Answer>;
+	};
+
+	type Answer = {
+		image?: string;
+		answer: string;
+	};
 }

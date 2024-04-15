@@ -1,5 +1,4 @@
 import {
-	HttpRequest,
 	HttpResponse,
 	Controller,
 	AddAccount,
@@ -14,30 +13,30 @@ import {
 import { Validation } from '@/presentation/protocols';
 import { EmailInUseError } from '@/presentation/errors';
 
-export class SignUpController implements Controller {
+export class SignUpController implements Controller<SignUpController.Request> {
 	constructor(
 		private readonly addAccount: AddAccount,
 		private readonly validation: Validation,
 		private readonly authentication: Authentication
 	) {}
 
-	async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+	async handle(request: SignUpController.Request): Promise<HttpResponse> {
 		try {
-			const error = this.validation.validate(httpRequest.body);
+			const error = this.validation.validate(request);
 
 			if (error) {
 				return badRequest(error);
 			}
 
-			const { name, email, password } = httpRequest.body;
+			const { name, email, password } = request;
 
-			const account = await this.addAccount.add({
+			const isValid = await this.addAccount.add({
 				name,
 				email,
 				password
 			});
 
-			if (!account) {
+			if (!isValid) {
 				return forbidden(new EmailInUseError());
 			}
 
@@ -48,4 +47,13 @@ export class SignUpController implements Controller {
 			return serverError(error);
 		}
 	}
+}
+
+export namespace SignUpController {
+	export type Request = {
+		name: string;
+		email: string;
+		password: string;
+		passwordConfirmation: string;
+	};
 }

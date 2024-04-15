@@ -94,6 +94,8 @@
 			}
 		],
 		"@typescript-eslint/no-unused-vars": "off",
+		"@typescript-eslint/no-namespace": "off",
+		"import/export": "off",
 		"unused-imports/no-unused-imports": "error",
 		"unused-imports/no-unused-vars": [
 			"warn",

@@ -14,3 +14,5 @@ package-lock.json
 .scannerwork
 .DS_Store
 ./data
+!tests/data
+!src/data

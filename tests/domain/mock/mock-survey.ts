@@ -1,5 +1,5 @@
 import { SurveyModel } from '@/domain/model/survey';
-import { AddSurveyParams } from '@/domain/usecases/survey/add-survey';
+import { AddSurvey } from '@/domain/usecases/survey/add-survey';
 import faker from 'faker';
 
 export const mockSurveyModel = (): SurveyModel => {
@@ -19,12 +19,12 @@ export const mockSurveyModel = (): SurveyModel => {
 	};
 };
 
-export const mockSurveyModels = (): SurveyModel[] => [
+export const mockSurveyModels = (): Array<SurveyModel> => [
 	mockSurveyModel(),
 	mockSurveyModel()
 ];
 
-export const mockAddSurveyParams = (): AddSurveyParams => ({
+export const mockAddSurveyParams = (): AddSurvey.Params => ({
 	question: faker.random.words(),
 	answers: [
 		{
