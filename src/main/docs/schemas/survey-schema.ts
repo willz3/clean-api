@@ -7,7 +7,10 @@ export const surveySchema = {
 		question: {
 			type: 'string'
 		},
-		answer: {
+		didAnswer: {
+			type: 'boolean'
+		},
+		answers: {
 			type: 'array',
 			items: {
 				$ref: '#/schemas/surveyAnswer'
@@ -16,5 +19,6 @@ export const surveySchema = {
 		date: {
 			type: 'string'
 		}
-	}
+	},
+	required: ['id', 'question', 'answers', 'didAnswer', 'date']
 };
