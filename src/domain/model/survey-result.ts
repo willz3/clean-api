@@ -10,6 +10,7 @@ type SurveyResultAnswerModel = {
 	image?: string;
 	count: number;
 	percent: number;
+	isCurrentAccountAnswer: boolean;
 };
 
 export { SurveyResultModel, SurveyResultAnswerModel };
