@@ -7,6 +7,7 @@ import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-to
 import { AccountModel } from '@/domain/model/account';
 import { mockAccountModel } from '@/domain/test';
 import faker from 'faker';
+import { AuthenticationModel } from '@/domain/model/authentication';
 
 export class AddAccountSpy implements AddAccount {
 	accountModel = mockAccountModel();
@@ -20,11 +21,14 @@ export class AddAccountSpy implements AddAccount {
 
 export class AuthenticationSpy implements Authentication {
 	authenticationParams: AuthenticationParams;
-	token = faker.random.uuid();
+	authenticationModel = {
+		accessToken: faker.random.uuid(),
+		name: faker.name.findName()
+	};
 
-	async auth(authenticationParams: AuthenticationParams): Promise<string> {
+	async auth(authenticationParams: AuthenticationParams): Promise<AuthenticationModel> {
 		this.authenticationParams = authenticationParams;
-		return Promise.resolve(this.token);
+		return Promise.resolve(this.authenticationModel);
 	}
 }
 
