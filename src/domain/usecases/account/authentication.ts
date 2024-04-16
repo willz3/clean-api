@@ -1,5 +1,3 @@
-import { AuthenticationModel } from '@/domain/model/authentication';
-
 export interface Authentication {
 	auth(authenticationParams: Authentication.Params): Promise<Authentication.Result>;
 }
@@ -9,5 +7,8 @@ export namespace Authentication {
 		email: string;
 		password: string;
 	};
-	export type Result = AuthenticationModel;
+	export type Result = {
+		accessToken: string;
+		name: string;
+	};
 }
