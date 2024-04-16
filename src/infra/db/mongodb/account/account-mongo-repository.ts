@@ -49,17 +49,24 @@ export class AccountMongoRepository
 		role?: string
 	): Promise<LoadAccountByTokenRepository.Result> {
 		const accountCollection = await MongoHelper.getCollection('accounts');
-		const account = await accountCollection.findOne({
-			accessToken: token,
-			$or: [
-				{
-					role
-				},
-				{
-					role: 'admin'
+		const account = await accountCollection.findOne(
+			{
+				accessToken: token,
+				$or: [
+					{
+						role
+					},
+					{
+						role: 'admin'
+					}
+				]
+			},
+			{
+				projection: {
+					_id: 1
 				}
-			]
-		});
+			}
+		);
 		return account && MongoHelper.map(account);
 	}
 }
