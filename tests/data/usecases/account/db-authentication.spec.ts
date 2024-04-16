@@ -54,7 +54,7 @@ describe('DbAuthentication UseCase', () => {
 
 	test('Should return null if LoadAccountByEmailRepository returns null', async () => {
 		const { sut, loadAccountByEmailRepositorySpy } = makeSut();
-		loadAccountByEmailRepositorySpy.accountModel = null;
+		loadAccountByEmailRepositorySpy.result = null;
 		const model = await sut.auth(mockAuthenticationParams());
 		expect(model).toBeNull();
 	});
@@ -64,9 +64,7 @@ describe('DbAuthentication UseCase', () => {
 		const authenticationParams = mockAuthenticationParams();
 		await sut.auth(authenticationParams);
 		expect(hashComparerSpy.plaintext).toBe(authenticationParams.password);
-		expect(hashComparerSpy.digest).toBe(
-			loadAccountByEmailRepositorySpy.accountModel.password
-		);
+		expect(hashComparerSpy.digest).toBe(loadAccountByEmailRepositorySpy.result.password);
 	});
 
 	test('Should throw if HashComparer throws', async () => {
@@ -86,7 +84,7 @@ describe('DbAuthentication UseCase', () => {
 	test('Should call Encrypter with correct plaintext', async () => {
 		const { sut, encrypterSpy, loadAccountByEmailRepositorySpy } = makeSut();
 		await sut.auth(mockAuthenticationParams());
-		expect(encrypterSpy.plaintext).toBe(loadAccountByEmailRepositorySpy.accountModel.id);
+		expect(encrypterSpy.plaintext).toBe(loadAccountByEmailRepositorySpy.result.id);
 	});
 
 	test('Should throw if Encrypter throws', async () => {
@@ -100,7 +98,7 @@ describe('DbAuthentication UseCase', () => {
 		const { sut, encrypterSpy, loadAccountByEmailRepositorySpy } = makeSut();
 		const { accessToken, name } = await sut.auth(mockAuthenticationParams());
 		expect(accessToken).toBe(encrypterSpy.ciphertext);
-		expect(name).toBe(loadAccountByEmailRepositorySpy.accountModel.name);
+		expect(name).toBe(loadAccountByEmailRepositorySpy.result.name);
 	});
 
 	test('Should call UpdateAccessTokenRepository with correct values', async () => {
@@ -112,7 +110,7 @@ describe('DbAuthentication UseCase', () => {
 		} = makeSut();
 		await sut.auth(mockAuthenticationParams());
 		expect(updateAccessTokenRepositorySpy.id).toBe(
-			loadAccountByEmailRepositorySpy.accountModel.id
+			loadAccountByEmailRepositorySpy.result.id
 		);
 		expect(updateAccessTokenRepositorySpy.token).toBe(encrypterSpy.ciphertext);
 	});

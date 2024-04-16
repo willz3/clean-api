@@ -1,5 +1,3 @@
-import { AccountModel } from '@/domain/model/account';
-
 export interface LoadAccountByEmailRepository {
 	loadByEmail(
 		email: LoadAccountByEmailRepository.Param
@@ -8,5 +6,9 @@ export interface LoadAccountByEmailRepository {
 
 export namespace LoadAccountByEmailRepository {
 	export type Param = string;
-	export type Result = AccountModel | null;
+	export type Result = {
+		id: string;
+		name: string;
+		password: string;
+	} | null;
 }
