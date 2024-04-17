@@ -4,6 +4,9 @@ import { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-r
 import { mockSurveyModel, mockSurveyModels } from '../../domain/mock';
 import { AddSurvey } from '@/domain/usecases/survey/add-survey';
 import { CheckSurveyByIdRepository } from '@/data/protocols/db/survey/check-survey-by-id-repository';
+import { LoadAnswersBySurveyRepository } from '@/data/protocols/db/survey/load-answers-by-survey-repository';
+
+import faker from 'faker';
 
 export class AddSurveyRepositorySpy implements AddSurveyRepository {
 	addSurveyParams: AddSurvey.Params;
@@ -23,6 +26,18 @@ export class LoadSurveyByIdRepositorySpy implements LoadSurveyByIdRepository {
 	): Promise<LoadSurveyByIdRepository.Result> {
 		this.id = id;
 		return Promise.resolve(this.result);
+	}
+}
+
+export class LoadAnswersBySurveyRepositorySpy implements LoadAnswersBySurveyRepository {
+	result = [faker.random.word(), faker.random.word()];
+	id: string;
+
+	async loadAnswers(
+		id: LoadAnswersBySurveyRepository.Param
+	): Promise<LoadAnswersBySurveyRepository.Result> {
+		this.id = id;
+		return this.result;
 	}
 }
 

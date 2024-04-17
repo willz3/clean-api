@@ -4,14 +4,36 @@ import { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-r
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository';
 import { ObjectId } from 'mongodb';
 import { CheckSurveyByIdRepository } from '@/data/protocols/db/survey/check-survey-by-id-repository';
+import { LoadAnswersBySurveyRepository } from '@/data/protocols/db/survey/load-answers-by-survey-repository';
 
 export class SurveyMongoRepository
 	implements
 		AddSurveyRepository,
 		LoadSurveysRepository,
 		LoadSurveyByIdRepository,
-		CheckSurveyByIdRepository
+		CheckSurveyByIdRepository,
+		LoadAnswersBySurveyRepository
 {
+	async loadAnswers(
+		id: LoadAnswersBySurveyRepository.Param
+	): Promise<LoadAnswersBySurveyRepository.Result> {
+		const surveyCollection = await MongoHelper.getCollection('surveys');
+
+		const query = new QueryBuilder()
+			.match({
+				_id: new ObjectId(id)
+			})
+			.project({
+				_id: 0,
+				answers: '$answers.answer'
+			})
+			.build();
+
+		const surveys = await surveyCollection.aggregate(query).toArray();
+
+		return surveys[0]?.answers || [];
+	}
+
 	async checkById(
 		id: CheckSurveyByIdRepository.Param
 	): Promise<CheckSurveyByIdRepository.Result> {
