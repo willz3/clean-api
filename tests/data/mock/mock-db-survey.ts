@@ -7,32 +7,32 @@ import { AddSurvey } from '@/domain/usecases/survey/add-survey';
 export class AddSurveyRepositorySpy implements AddSurveyRepository {
 	addSurveyParams: AddSurvey.Params;
 
-	async add(data: AddSurvey.Params): Promise<void> {
+	async add(data: AddSurvey.Params): Promise<AddSurvey.Result> {
 		this.addSurveyParams = data;
 		return Promise.resolve();
 	}
 }
 
 export class LoadSurveyByIdRepositorySpy implements LoadSurveyByIdRepository {
-	surveyModel = mockSurveyModel();
+	result = mockSurveyModel();
 	id: string;
 
 	async loadById(
 		id: LoadSurveyByIdRepository.Param
 	): Promise<LoadSurveyByIdRepository.Result> {
 		this.id = id;
-		return Promise.resolve(this.surveyModel);
+		return Promise.resolve(this.result);
 	}
 }
 
 export class LoadSurveysRepositorySpy implements LoadSurveysRepository {
-	surveyModels = mockSurveyModels();
+	result = mockSurveyModels();
 	accountId: string;
 
 	async loadAll(
 		accountId: LoadSurveysRepository.Param
 	): Promise<LoadSurveysRepository.Result> {
 		this.accountId = accountId;
-		return Promise.resolve(this.surveyModels);
+		return Promise.resolve(this.result);
 	}
 }
