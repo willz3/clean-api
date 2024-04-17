@@ -3,7 +3,8 @@ import {
 	LoadAccountByEmailRepository,
 	UpdateAccessTokenRepository,
 	LoadAccountByTokenRepository,
-	MongoHelper
+	MongoHelper,
+	CheckAccountByEmailRepository
 } from './account-mongo-repository-protocols';
 
 export class AccountMongoRepository
@@ -11,8 +12,24 @@ export class AccountMongoRepository
 		AddAccountRepository,
 		LoadAccountByEmailRepository,
 		UpdateAccessTokenRepository,
-		LoadAccountByTokenRepository
+		LoadAccountByTokenRepository,
+		CheckAccountByEmailRepository
 {
+	async checkByEmail(
+		email: CheckAccountByEmailRepository.Param
+	): Promise<CheckAccountByEmailRepository.Result> {
+		const accountCollection = await MongoHelper.getCollection('accounts');
+		const account = await accountCollection.findOne(
+			{ email },
+			{
+				projection: {
+					_id: 1
+				}
+			}
+		);
+		return account != null;
+	}
+
 	async add(data: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
 		const accountCollection = await MongoHelper.getCollection('accounts');
 		const result = await accountCollection.insertOne(data);

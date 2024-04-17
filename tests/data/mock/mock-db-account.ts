@@ -2,6 +2,7 @@ import { AddAccountRepository } from '@/data/protocols/db/account/add-account-re
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository';
 import { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository';
 import { UpdateAccessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository';
+import { CheckAccountByEmailRepository } from '@/data/protocols/db/account/check-account-by-email-repository';
 
 import faker from 'faker';
 
@@ -27,6 +28,18 @@ export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailReposi
 	async loadByEmail(
 		email: LoadAccountByEmailRepository.Param
 	): Promise<LoadAccountByEmailRepository.Result> {
+		this.email = email;
+		return this.result;
+	}
+}
+
+export class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepository {
+	result = false;
+	email: string;
+
+	async checkByEmail(
+		email: CheckAccountByEmailRepository.Param
+	): Promise<CheckAccountByEmailRepository.Result> {
 		this.email = email;
 		return this.result;
 	}
