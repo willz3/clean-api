@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import {
 	SaveSurveyResultRepository,
 	MongoHelper,
@@ -6,6 +5,7 @@ import {
 	LoadSurveyResultRepository
 } from './survey-result-mongo-repository-protocols';
 import round from 'mongo-round';
+import { ObjectId } from 'mongodb';
 
 export class SurveyResultMongoRepository
 	implements SaveSurveyResultRepository, LoadSurveyResultRepository

@@ -1,10 +1,14 @@
-import { MongoHelper, QueryBuilder } from '@/infra/db/mongodb/helpers';
-import { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-repository';
-import { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-repository';
-import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository';
+import {
+	AddSurveyRepository,
+	LoadSurveysRepository,
+	LoadSurveyByIdRepository,
+	CheckSurveyByIdRepository,
+	LoadAnswersBySurveyRepository,
+	MongoHelper,
+	QueryBuilder
+} from './survey-mongo-repository-protocols';
+
 import { ObjectId } from 'mongodb';
-import { CheckSurveyByIdRepository } from '@/data/protocols/db/survey/check-survey-by-id-repository';
-import { LoadAnswersBySurveyRepository } from '@/data/protocols/db/survey/load-answers-by-survey-repository';
 
 export class SurveyMongoRepository
 	implements

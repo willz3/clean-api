@@ -1,5 +1,5 @@
+import { MongoHelper } from '@/infra/db/mongodb/survey/survey-mongo-repository-protocols';
 import { SurveyMongoRepository } from '@/infra/db/mongodb/survey/survey-mongo-repository';
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper';
 import { mockAddAccountParams, mockAddSurveyParams } from '@/tests/domain/mock';
 import { Collection } from 'mongodb';
 import ObjectID from 'bson-objectid';
