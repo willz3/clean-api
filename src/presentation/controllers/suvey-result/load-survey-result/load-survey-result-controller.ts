@@ -1,8 +1,8 @@
+import { CheckSurveyById } from '@/domain/usecases/survey/check-survey-by-id';
 import {
 	Controller,
 	HttpResponse,
 	InvalidParamError,
-	LoadSurveyById,
 	LoadSurveyResult,
 	forbidden,
 	ok,
@@ -13,15 +13,15 @@ export class LoadSurveyResultController
 	implements Controller<LoadSurveyResultController.Request>
 {
 	constructor(
-		private readonly loadSurveyById: LoadSurveyById,
+		private readonly checkSurveyById: CheckSurveyById,
 		private readonly loadSurveyResult: LoadSurveyResult
 	) {}
 
 	async handle(request: LoadSurveyResultController.Request): Promise<HttpResponse> {
 		try {
 			const { surveyId, accountId } = request;
-			const survey = await this.loadSurveyById.loadById(surveyId);
-			if (!survey) {
+			const exists = await this.checkSurveyById.checkById(surveyId);
+			if (!exists) {
 				return forbidden(new InvalidParamError('surveyId'));
 			}
 			const surveyResult = await this.loadSurveyResult.load(surveyId, accountId);

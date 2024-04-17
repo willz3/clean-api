@@ -3,6 +3,7 @@ import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey
 import { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-repository';
 import { mockSurveyModel, mockSurveyModels } from '../../domain/mock';
 import { AddSurvey } from '@/domain/usecases/survey/add-survey';
+import { CheckSurveyByIdRepository } from '@/data/protocols/db/survey/check-survey-by-id-repository';
 
 export class AddSurveyRepositorySpy implements AddSurveyRepository {
 	addSurveyParams: AddSurvey.Params;
@@ -34,5 +35,17 @@ export class LoadSurveysRepositorySpy implements LoadSurveysRepository {
 	): Promise<LoadSurveysRepository.Result> {
 		this.accountId = accountId;
 		return Promise.resolve(this.result);
+	}
+}
+
+export class CheckSurveyByIdRepositorySpy implements CheckSurveyByIdRepository {
+	result = true;
+	id: string;
+
+	async checkById(
+		id: CheckSurveyByIdRepository.Param
+	): Promise<CheckSurveyByIdRepository.Result> {
+		this.id = id;
+		return this.result;
 	}
 }

@@ -63,7 +63,7 @@ describe('AddSurvey Controller', () => {
 		const { sut, addSurveySpy } = makeSut();
 		const request = mockRequest();
 		await sut.handle(request);
-		expect(addSurveySpy.addSurveyParams).toEqual({
+		expect(addSurveySpy.params).toEqual({
 			...request,
 			date: new Date()
 		});
