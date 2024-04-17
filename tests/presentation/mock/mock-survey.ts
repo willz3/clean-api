@@ -1,8 +1,10 @@
 import { AddSurvey } from '@/domain/usecases/survey/add-survey';
-import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id';
 import { LoadSurveys } from '@/domain/usecases/survey/load-surveys';
-import { mockSurveyModels, mockSurveyModel } from '../../domain/mock';
+import { mockSurveyModels } from '../../domain/mock';
 import { CheckSurveyById } from '@/domain/usecases/survey/check-survey-by-id';
+import { LoadAnswersBySurvey } from '@/domain/usecases/survey/load-answers-by-survey';
+
+import faker from 'faker';
 
 export class AddSurveySpy implements AddSurvey {
 	params: AddSurvey.Params;
@@ -23,11 +25,11 @@ export class LoadSurveysSpy implements LoadSurveys {
 	}
 }
 
-export class LoadSurveyByIdSpy implements LoadSurveyById {
-	result = mockSurveyModel();
+export class LoadAnswersBySurveySpy implements LoadAnswersBySurvey {
+	result = [faker.random.word(), faker.random.word()];
 	id: string;
 
-	async loadById(id: LoadSurveyById.Param): Promise<LoadSurveyById.Result> {
+	async loadAnswers(id: LoadAnswersBySurvey.Param): Promise<LoadAnswersBySurvey.Result> {
 		this.id = id;
 		return this.result;
 	}
