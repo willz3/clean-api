@@ -4,11 +4,14 @@ import resolvers from '@/main/graphql/resolvers';
 import { ApolloServer } from 'apollo-server-express';
 import { Express } from 'express';
 import { GraphQLError } from 'graphql';
+import schemaDirectives from '@/main/graphql/directives';
 
 export default (app: Express): void => {
 	const server = new ApolloServer({
 		resolvers,
 		typeDefs,
+		schemaDirectives,
+		context: ({ req }) => ({ req }),
 		plugins: [
 			{
 				requestDidStart: () => ({
