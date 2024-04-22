@@ -5,16 +5,16 @@ export default gql`
 		surveys: [Survey!]! @auth
 	}
 
-	type Survey: {
+	type Survey {
 		id: ID!
 		question: String!
-		answers: [SurveysAnswer!]!
-		date: Date
+		answers: [SurveyAnswer!]!
+		date: String!
 		didAnswer: Boolean
 	}
 
-	type SurveysAnswer = {
+	type SurveyAnswer {
 		image: String
 		answer: String!
-	};
+	}
 `;
